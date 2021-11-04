@@ -13,10 +13,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${DDL_AUTO:update}
-    show-sql: ${SHOW_SQL:true}
+    show-sql: ${SHOW_SQL:false}
 logging:
   level:
     root:
-      error
+      info
   file:
     name: log/log.txt
