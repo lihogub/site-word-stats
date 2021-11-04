@@ -12,7 +12,7 @@
 	<artifactId>site-word-stats</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>site-word-stats</name>
-	<description>Word statistics of site.</description>
+	<description>Word statistics of siteModel.</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -62,6 +62,24 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- pattern matching -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>31.0.1-jre</version>
+		</dependency>
+		<!-- siteModel parsing -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.14.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -76,6 +94,14 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>16</source>
+					<target>16</target>
 				</configuration>
 			</plugin>
 		</plugins>

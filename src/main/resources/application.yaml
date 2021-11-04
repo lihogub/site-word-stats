@@ -16,5 +16,7 @@ spring:
     show-sql: ${SHOW_SQL:true}
 logging:
   level:
-    ru.lihogub:
-      debug
+    root:
+      error
+  file:
+    name: log/log.txt
