@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import ru.lihogub.sitewordstats.service.parser.ParserServiceImpl;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +21,7 @@ import java.util.Map;
 @RunWith(MockitoJUnitRunner.class)
 public class ParserServiceTests {
     private final List<Character> allDelimiterList =
-            List.of(' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t');
+            Arrays.asList(' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t');
 
     @Mock
     private RestTemplate restTemplate;
@@ -37,7 +39,7 @@ public class ParserServiceTests {
                 .when(restTemplate.getForEntity("", String.class))
                 .thenReturn(ResponseEntity.ok("a,b"));
         try {
-            Map<String, Integer> frequency = parserService.getStatsForURL("", List.of(','));
+            Map<String, Integer> frequency = parserService.getStatsForURL("", Collections.singletonList(','));
             Assertions.assertEquals(1, frequency.get("A"));
             Assertions.assertEquals(1, frequency.get("B"));
         } catch (Exception ignored) {
@@ -52,7 +54,7 @@ public class ParserServiceTests {
                 .thenReturn(ResponseEntity.ok("a,b.A c!a?b\"C;d:e[D]e(h)\nA\rb\tc"));
         try {
             Map<String, Integer> frequency = parserService.getStatsForURL("",
-                    List.of(' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t'));
+                    Arrays.asList(' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t'));
             Assertions.assertEquals(4, frequency.get("A"));
             Assertions.assertEquals(3, frequency.get("B"));
             Assertions.assertEquals(3, frequency.get("C"));
@@ -70,7 +72,7 @@ public class ParserServiceTests {
                 .when(restTemplate.getForEntity("", String.class))
                 .thenReturn(ResponseEntity.ok("A...B,.,C"));
         try {
-            Map<String, Integer> frequency = parserService.getStatsForURL("", List.of('.', ','));
+            Map<String, Integer> frequency = parserService.getStatsForURL("", Arrays.asList('.', ','));
             Assertions.assertEquals(1, frequency.get("A"));
             Assertions.assertEquals(1, frequency.get("B"));
             Assertions.assertEquals(1, frequency.get("C"));
@@ -82,34 +84,34 @@ public class ParserServiceTests {
     @Test
     public void testStringSplitter0() {
         // result of split
-        var doubleSplit = List.of("A", "B");
+        List<String> doubleSplit = Arrays.asList("A", "B");
         // for each delimiter try to split source string: e.g. "a*b" -> ["a", "b"]
-        for (var delimiter : allDelimiterList) {
+        for (Character delimiter : allDelimiterList) {
             Assertions.assertEquals(doubleSplit, parserService.splitString("a" + delimiter + "b", allDelimiterList));
         }
     }
 
     @Test
     public void testStringSplitter1() {
-        var tripleSplit = List.of("A", "B", "C");
+        List<String> tripleSplit = Arrays.asList("A", "B", "C");
         // e.g. "a*b*c" -> ["a", "b", "c"]
-        for (var delimiter : allDelimiterList) {
+        for (Character delimiter : allDelimiterList) {
             Assertions.assertEquals(tripleSplit, parserService.splitString("a" + delimiter + "b" + delimiter + "c", allDelimiterList));
         }
     }
 
     @Test
     public void testStringSplitter2() {
-        var tripleSplit = List.of("A", "B", "C");
+        List<String> tripleSplit = Arrays.asList("A", "B", "C");
         // e.g. "a*b**c" -> ["a", "b", "c"]
-        for (var delimiter : allDelimiterList) {
+        for (Character delimiter : allDelimiterList) {
             Assertions.assertEquals(tripleSplit, parserService.splitString("a" + delimiter + delimiter + "b" + delimiter + "c", allDelimiterList));
         }
     }
 
     @Test
     public void testCountWordFrequency0() {
-        Map<String, Integer> wordFrequency = parserService.countWordFrequency(List.of("a", "b", "b", "c", "a", "a"));
+        Map<String, Integer> wordFrequency = parserService.countWordFrequency(Arrays.asList("a", "b", "b", "c", "a", "a"));
         Assertions.assertEquals(3, wordFrequency.get("a"));
         Assertions.assertEquals(2, wordFrequency.get("b"));
         Assertions.assertEquals(1, wordFrequency.get("c"));
@@ -118,14 +120,14 @@ public class ParserServiceTests {
 
     @Test
     public void testCountWordFrequency1() {
-        Map<String, Integer> wordFrequency = parserService.countWordFrequency(List.of("a", "a", "a", "a", "a", "a"));
+        Map<String, Integer> wordFrequency = parserService.countWordFrequency(Arrays.asList("a", "a", "a", "a", "a", "a"));
         Assertions.assertEquals(6, wordFrequency.get("a"));
         Assertions.assertEquals(1, wordFrequency.size());
     }
 
     @Test
     public void testCountWordFrequency2() {
-        Map<String, Integer> wordFrequency = parserService.countWordFrequency(List.of("a", "a", "a", "b", "b", "b"));
+        Map<String, Integer> wordFrequency = parserService.countWordFrequency(Arrays.asList("a", "a", "a", "b", "b", "b"));
         Assertions.assertEquals(3, wordFrequency.get("a"));
         Assertions.assertEquals(3, wordFrequency.get("b"));
         Assertions.assertEquals(2, wordFrequency.size());

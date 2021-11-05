@@ -12,6 +12,7 @@ import ru.lihogub.sitewordstats.model.WordOccurrenceModel;
 import ru.lihogub.sitewordstats.service.persistence.PersistenceServiceImpl;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class PersistenceServiceTests {
     @Transactional
     public void testSaveAndGetSite() {
         SiteModel sourceSiteModel = new SiteModel();
-        sourceSiteModel.setWords(List.of(
+        sourceSiteModel.setWords(Arrays.asList(
                 new WordOccurrenceModel(null, "a", 1L),
                 new WordOccurrenceModel(null, "b", 2L),
                 new WordOccurrenceModel(null, "c", 3L)
@@ -47,7 +48,7 @@ public class PersistenceServiceTests {
     @Transactional
     public void testSaveAndDeleteSite() {
         SiteModel sourceSiteModel = new SiteModel();
-        sourceSiteModel.setWords(List.of(
+        sourceSiteModel.setWords(Arrays.asList(
                 new WordOccurrenceModel(null, "a", 1L),
                 new WordOccurrenceModel(null, "b", 2L),
                 new WordOccurrenceModel(null, "c", 3L)
@@ -68,7 +69,7 @@ public class PersistenceServiceTests {
     @Transactional
     public void testSaveMultipleSiteAndGetList() {
         SiteModel sourceSiteModel0 = new SiteModel();
-        sourceSiteModel0.setWords(List.of(
+        sourceSiteModel0.setWords(Arrays.asList(
                 new WordOccurrenceModel(null, "a", 1L),
                 new WordOccurrenceModel(null, "b", 2L),
                 new WordOccurrenceModel(null, "c", 3L)
@@ -77,7 +78,7 @@ public class PersistenceServiceTests {
         persistenceService.saveSite(sourceSiteModel0);
 
         SiteModel sourceSiteModel1 = new SiteModel();
-        sourceSiteModel1.setWords(List.of(
+        sourceSiteModel1.setWords(Arrays.asList(
                 new WordOccurrenceModel(null, "a", 1L),
                 new WordOccurrenceModel(null, "b", 2L),
                 new WordOccurrenceModel(null, "c", 3L)

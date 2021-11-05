@@ -19,8 +19,8 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class ParserServiceImpl implements ParserService {
     private final RestTemplate restTemplate;
-    private final List<Character> allDelimitersList = List
-            .of(' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t');
+    private final List<Character> allDelimitersList = Arrays
+            .asList(' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t');
 
     /**
      * Parses specified URL.
@@ -30,7 +30,7 @@ public class ParserServiceImpl implements ParserService {
         Map<String, Integer> wordFrequencyMap = getStatsForURL(URL, allDelimitersList);
         // Map stats to "Site" domain model.
         List<WordOccurrenceModel> wordOccurrenceModelList = new ArrayList<>();
-        for (var entry : wordFrequencyMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : wordFrequencyMap.entrySet()) {
             wordOccurrenceModelList.add(new WordOccurrenceModel(null, entry.getKey(), entry.getValue().longValue()));
         }
         // Sort by frequency descending.
@@ -70,7 +70,7 @@ public class ParserServiceImpl implements ParserService {
         // Collect Iterable to List
         return StreamSupport
                 .stream(words.spliterator(), false)
-                .filter(word -> !word.isBlank())
+                .filter(word -> !word.isEmpty())
                 .map(String::toUpperCase)
                 .collect(Collectors.toList());
     }
@@ -82,7 +82,7 @@ public class ParserServiceImpl implements ParserService {
     public Map<String, Integer> countWordFrequency(List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList);
         Map<String, Integer> wordCount = new HashMap<>();
-        for (var word : wordSet) {
+        for (String word : wordSet) {
             wordCount.put(word, Collections.frequency(wordList, word));
         }
         return wordCount;
