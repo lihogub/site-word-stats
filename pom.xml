@@ -12,7 +12,7 @@
 	<artifactId>site-word-stats</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>site-word-stats</name>
-	<description>Word statistics of siteModel.</description>
+	<description>Word statistics of site.</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
